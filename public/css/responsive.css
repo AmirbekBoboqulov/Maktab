@@ -172,20 +172,14 @@
         margin-top: 15%;
     }
 
-    .contact_row1 {
-        margin-left: 14px;
-    }
-
-    .contact_row2 {
-        margin-left: 14px;
-    }
-
+    .contact_row1,
+    .contact_row2,
     .contact_row3 {
-        margin-left: 14px;
+        margin-left: 0;
     }
 
     .contact_row3 input {
-        width: 92%;
+        width: 100%;
     }
 
     .contact__title {
@@ -514,6 +508,200 @@
 
 }
 
+/* Shared public-site mobile layout */
+@media (max-width: 767px) {
+    html,
+    body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    img,
+    iframe,
+    video {
+        max-width: 100%;
+    }
+
+    header .topMainMenu {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+        margin: 0;
+        padding: 10px 14px;
+    }
+
+    header .topMain-logo {
+        position: static !important;
+        grid-column: 1;
+        width: auto !important;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        color: #143797;
+    }
+
+    header .topMain-logo img {
+        width: 42px !important;
+        max-width: 42px;
+        flex: 0 0 42px;
+        margin: 0;
+    }
+
+    header .topMain-logo p {
+        margin: 0;
+        padding: 0;
+        font-size: 13px;
+        line-height: 1.25;
+        text-align: left;
+    }
+
+    header .topMainMenu > ul {
+        display: none !important;
+    }
+
+    header .additionalFuntions {
+        position: static !important;
+        grid-column: 1 / -1;
+        width: 100%;
+        margin: 0;
+    }
+
+    header .additionalFuntions form {
+        width: 100%;
+    }
+
+    header .additionalFuntions .input-group {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: none !important;
+    }
+
+    header .additionalFuntions .btn {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    header .headerMenuBox {
+        min-height: 56px;
+        justify-content: flex-end;
+    }
+
+    header .bigMenuBtn {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin-right: 4px;
+    }
+
+    header .headerMenuBox .borderedBtn {
+        position: static !important;
+        width: 48px;
+        height: 48px;
+    }
+
+    header .overlay_li-social {
+        position: static !important;
+    }
+
+    header .listMenu li {
+        width: auto;
+        max-width: 100%;
+    }
+
+    .school_info {
+        width: auto;
+        margin-left: 0 !important;
+    }
+
+    .onlineSchool__info {
+        padding: 0 12px !important;
+    }
+
+    .onlineSchool__info h1 {
+        font-size: 24px;
+        line-height: 1.3;
+    }
+
+    .onlineSchool__info p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .onlineSchool__img img {
+        width: min(75%, 360px);
+        height: auto;
+        margin: 20px auto 0;
+        display: block;
+    }
+
+    .mapArea iframe {
+        height: 360px;
+    }
+
+    .footer_inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        text-align: center;
+    }
+
+    .footer_contact-left,
+    .footer_contact-right,
+    .footer_logo,
+    .year_text {
+        position: static !important;
+        width: 100%;
+        margin: 0 !important;
+        transform: none !important;
+    }
+
+    .footer_logo {
+        gap: 12px;
+        padding: 8px 0;
+    }
+
+    .footer_logo span img {
+        width: 64px !important;
+        height: auto;
+    }
+
+    .footer_logo a {
+        max-width: 100%;
+        font-size: 15px;
+        overflow-wrap: anywhere;
+    }
+
+    .footer_logo a i {
+        margin-top: 6px;
+        font-size: 13px;
+    }
+
+    .footer .year_text {
+        display: block;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 480px) {
+    header .additionalFuntions form {
+        gap: 6px !important;
+    }
+
+    header .additionalFuntions .btn {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .mapArea iframe {
+        height: 300px;
+    }
+}
+
 @media (max-width:360px) {
     .contact_row3 {
         margin-left: -11px
@@ -525,3 +713,41 @@
 }
 
 @media (max-width:320px) {}
+
+@media (max-width: 768px) {
+    .mainServicesList {
+        margin-top: 60px;
+        margin-bottom: 40px;
+        gap: 12px;
+    }
+
+    .mainServicesList > a {
+        width: min(360px, calc(100% - 24px));
+        margin: 8px 0;
+        padding: 30px 20px;
+    }
+
+    .mainServicesList > a .icon {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .service-icon {
+        width: 45%;
+        max-width: 150px;
+        height: auto;
+    }
+
+    .school_info {
+        width: min(200px, calc(100% - 30px));
+        margin: 30px auto 0;
+    }
+
+    .contact_row1 input,
+    .contact_row2 input,
+    .contact_row3 input {
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+    }
+}

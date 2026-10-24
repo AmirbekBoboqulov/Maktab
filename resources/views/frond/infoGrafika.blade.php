@@ -22,10 +22,10 @@
                     <div class="item">
                         <a href="{{ asset('admin/images/' . $info->image) }}">
                             <div class="imageBox">
-                                <img src="{{ asset('admin/images/' . $info->image) }}">
+                                <img src="{{ asset('admin/images/' . $info->image) }}" alt="{{ $info['title_' . app()->getLocale()] ?: $info->title_uz }}">
                             </div>
                             <div class="descriptionBox">
-                                <h1>{{ $info->title_uz }}</h1>
+                                <h1>{{ $info['title_' . app()->getLocale()] ?: $info->title_uz }}</h1>
                                 <span class="news__date basic-flex">{{ $info->created_at->format('H:i') }} / {{ $info->created_at->format('d.m.Y') }}</span>
                             </div>
                         </a>

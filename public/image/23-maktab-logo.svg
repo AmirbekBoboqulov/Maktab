@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" role="img" aria-labelledby="title desc">
+  <title id="title">23-maktab</title>
+  <desc id="desc">23-sonli umumta'lim maktabi emblemasi, ochiq kitob va alangali qalqon bilan.</desc>
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f9e39a"/>
+      <stop offset=".48" stop-color="#b9862e"/>
+      <stop offset="1" stop-color="#f5d77c"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2=".9" y2="1">
+      <stop offset="0" stop-color="#267aa4"/>
+      <stop offset="1" stop-color="#082d5d"/>
+    </linearGradient>
+    <pattern id="grain" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="3" r=".6" fill="#c9bd9d" opacity=".22"/>
+      <circle cx="9" cy="8" r=".5" fill="#c9bd9d" opacity=".18"/>
+    </pattern>
+    <filter id="shadow" x="-.2" y="-.2" width="1.4" height="1.5">
+      <feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#152b46" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <rect width="720" height="720" rx="18" fill="#f6f3e9"/>
+  <rect width="720" height="720" rx="18" fill="url(#grain)"/>
+  <text x="360" y="86" text-anchor="middle" fill="#102d55" font-family="Arial, sans-serif" font-size="29" font-weight="700">23-SONLI UMUMTA'LIM MAKTABI</text>
+  <g filter="url(#shadow)">
+    <path d="M360 132 535 178v166c0 112-69 186-175 231-106-45-175-119-175-231V178z" fill="url(#gold)"/>
+    <path d="M360 148 519 190v152c0 101-61 168-159 211-98-43-159-110-159-211V190z" fill="#f7e6b2"/>
+    <path d="M360 164 503 202v139c0 90-53 150-143 190-90-40-143-100-143-190V202z" fill="url(#blue)" stroke="#d4a84d" stroke-width="5"/>
+    <path d="M360 187c-15 24-28 43-25 61 3 15 14 23 25 24 13-1 24-9 27-24 4-18-9-37-27-61zm0 35c9 15 12 24 8 31-2 5-5 7-8 7s-7-2-9-7c-3-7 0-16 9-31z" fill="#f1cf72"/>
+    <path d="M264 283c34 2 66 12 96 31 30-19 62-29 96-31v102c-35-2-67 8-96 27-29-19-61-29-96-27z" fill="#fffdf4" stroke="#d8bd79" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M360 315v97m-78-106c20 4 36 10 52 19m-52-1c20 4 36 10 52 19m-52-1c20 4 36 10 52 19m-52-1c20 4 36 10 52 19m130-74c-20 4-36 10-52 19m52-1c-20 4-36 10-52 19m52-1c-20 4-36 10-52 19m52-1c-20 4-36 10-52 19" fill="none" stroke="#173e68" stroke-width="5" stroke-linecap="round"/>
+    <g fill="none" stroke="#d6b65e" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M249 393c-18 29-31 62-34 99m34-80c-23 1-36-11-37-30m29 53c-22-2-36 7-44 25m40-6c-20 4-31 17-35 35"/>
+      <path d="M471 393c18 29 31 62 34 99m-34-80c23 1 36-11 37-30m-29 53c22-2 36 7 44 25m-40-6c20 4 31 17 35 35"/>
+    </g>
+    <g fill="#f7f1dc" stroke="#d7bb70" stroke-width="5">
+      <circle cx="211" cy="363" r="13"/><circle cx="202" cy="418" r="12"/><circle cx="218" cy="458" r="13"/>
+      <circle cx="509" cy="363" r="13"/><circle cx="518" cy="418" r="12"/><circle cx="502" cy="458" r="13"/>
+    </g>
+  </g>
+  <text x="360" y="615" text-anchor="middle" fill="#102d55" font-family="Arial, sans-serif" font-size="76" font-weight="800" letter-spacing="2">23-MAKTAB</text>
+  <path d="M168 643h384" stroke="url(#gold)" stroke-width="8" stroke-linecap="round"/>
+</svg>

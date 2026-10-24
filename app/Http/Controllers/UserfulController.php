@@ -34,6 +34,7 @@ class UserfulController extends Controller
             'title_ru' => 'required|string|max:255',
             'body_uz'  => 'required|string',
             'body_ru'  => 'required|string',
+            'url' => 'required|url',
         ]);
 
         if ($request->hasFile('image')) {
@@ -53,7 +54,8 @@ class UserfulController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $usefulResource = UsefulResource::findOrFail($id);
+        return view('admin.usefulResource.show', compact('usefulResource'));
     }
 
     /**
@@ -61,7 +63,8 @@ class UserfulController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $usefulResource = UsefulResource::findOrFail($id);
+        return view('admin.usefulResource.edit', compact('usefulResource'));
     }
 
     /**
@@ -69,7 +72,25 @@ class UserfulController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $usefulResource = UsefulResource::findOrFail($id);
+        $requestData = $request->validate([
+            'title_uz' => 'required|string|max:255',
+            'title_ru' => 'required|string|max:255',
+            'body_uz' => 'required|string',
+            'body_ru' => 'required|string',
+            'url' => 'required|url',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imageName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('admin/images/'), $imageName);
+            $requestData['image'] = $imageName;
+        }
+
+        $usefulResource->update($requestData);
+        return redirect()->route('admin.usefulResource.index');
     }
 
     /**

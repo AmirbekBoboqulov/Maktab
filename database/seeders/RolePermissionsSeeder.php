@@ -14,13 +14,13 @@ class RolePermissionsSeeder extends Seeder
     public function run(): void
     {
         // Rollar
-        Role::create(['name' => "Super Admin"]);
-        Role::create(['name' => "Admin"]);
-        Role::create(['name' => "Creator"]);
+        Role::firstOrCreate(['name' => "Super Admin"]);
+        Role::firstOrCreate(['name' => "Admin"]);
+        Role::firstOrCreate(['name' => "Creator"]);
 
         // Ruxsatlar
-        Permission::create(['name' => "Create category"]);
-        Permission::create(['name' => "Edit category"]);
-        Permission::create(['name' => "Delete category"]);
+        Permission::firstOrCreate(['name' => "Create category"]);
+        Permission::firstOrCreate(['name' => "Edit category"]);
+        Permission::firstOrCreate(['name' => "Delete category"]);
     }
 }

@@ -113,7 +113,6 @@
                                                 </ul>
                                         </ul>
                                         <ul class="simple">
-                                            <li><a href="usefulResurs.html">Foydali resurslar</a></li>
                                             <li><a href="connect.html">Bogʻlanish</a></li>
                                         </ul>
                                     </div>
@@ -178,7 +177,6 @@
                                             </ul>
                                         </li>
                                         <li>
-                                            <a href="usefulResurs.html">Foydali resurslar </a>
                                         </li>
                                         <li>
                                             <a href="schoolNews.html">Axborot markazi </a>

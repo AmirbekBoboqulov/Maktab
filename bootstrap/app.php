@@ -12,8 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append(\Illuminate\Session\Middleware\StartSession::class);
-        $middleware->append(Language::class);
+        $middleware->web(append: [Language::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

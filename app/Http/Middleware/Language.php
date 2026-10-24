@@ -16,9 +16,8 @@ class Language
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(session()->has('lang')){
-            $lang = session('lang');
-        }else {
+        $lang = session('lang');
+        if (! in_array($lang, ['uz', 'ru'], true)) {
             $lang = 'uz';
         }
 

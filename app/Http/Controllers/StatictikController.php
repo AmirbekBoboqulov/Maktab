@@ -44,7 +44,8 @@ class StatictikController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $statictik = Statictik::findOrFail($id);
+        return view('admin.statictik.show', compact('statictik'));
     }
 
     /**
@@ -52,7 +53,8 @@ class StatictikController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $statictik = Statictik::findOrFail($id);
+        return view('admin.statictik.edit', compact('statictik'));
     }
 
     /**
@@ -60,7 +62,16 @@ class StatictikController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'classesCount' => 'required|integer|min:0',
+            'studentsCount' => 'required|integer|min:0',
+            'teachersCount' => 'required|integer|min:0',
+            'graduatesCount' => 'required|integer|min:0',
+        ]);
+
+        $statictik = Statictik::findOrFail($id);
+        $statictik->update($validatedData);
+        return redirect()->route('admin.statictik.index');
     }
 
     /**

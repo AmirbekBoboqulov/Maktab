@@ -19,13 +19,17 @@
         var prevButton = document.querySelector('.slick-prev');
         var nextButton = document.querySelector('.slick-next');
 
-        prevButton.addEventListener('click', function () {
-            prevButton.style.backgroundColor = '#2a3fcc'; // Fon rangini qizil qilish
-        });
+        if (prevButton) {
+            prevButton.addEventListener('click', function () {
+                prevButton.style.backgroundColor = '#2a3fcc';
+            });
+        }
 
-        nextButton.addEventListener('click', function () {
-            nextButton.style.backgroundColor = '#2a3fcc'; // Fon rangini qizil qilish
-        });
+        if (nextButton) {
+            nextButton.addEventListener('click', function () {
+                nextButton.style.backgroundColor = '#2a3fcc';
+            });
+        }
 
         // Search Bnts open close
         $(".closeBtn").click(function (e) {
@@ -46,11 +50,13 @@
     const bigMenuBtn = document.querySelector('.bigMenuBtn');
     const overlay = document.querySelector('.overlay');
 
-    bigMenuBtn.addEventListener('click', function () {
-        this.classList.toggle('active');
-        overlay.classList.toggle('active');
-        document.body.classList.toggle('no-scroll');
-    });
+    if (bigMenuBtn && overlay) {
+        bigMenuBtn.addEventListener('click', function () {
+            this.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.classList.toggle('no-scroll');
+        });
+    }
 
     // Dropdown Language
     document.addEventListener("DOMContentLoaded", function () {
@@ -59,6 +65,10 @@
         const dropdownItems = document.querySelectorAll(".dropdown-item");
 
         // Add click event listener to the dropdown button
+        if (!dropdownButton || !dropdownMenu) {
+            return;
+        }
+
         dropdownButton.addEventListener("click", function () {
             // Toggle the dropdown menu
             dropdownMenu.classList.toggle("show");

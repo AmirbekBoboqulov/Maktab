@@ -172,20 +172,14 @@
         margin-top: 15%;
     }
 
-    .contact_row1 {
-        margin-left: 14px;
-    }
-
-    .contact_row2 {
-        margin-left: 14px;
-    }
-
+    .contact_row1,
+    .contact_row2,
     .contact_row3 {
-        margin-left: 14px;
+        margin-left: 0;
     }
 
     .contact_row3 input {
-        width: 92%;
+        width: 100%;
     }
 
     .contact__title {
@@ -525,3 +519,41 @@
 }
 
 @media (max-width:320px) {}
+
+@media (max-width: 768px) {
+    .mainServicesList {
+        margin-top: 60px;
+        margin-bottom: 40px;
+        gap: 12px;
+    }
+
+    .mainServicesList > a {
+        width: min(360px, calc(100% - 24px));
+        margin: 8px 0;
+        padding: 30px 20px;
+    }
+
+    .mainServicesList > a .icon {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .service-icon {
+        width: 45%;
+        max-width: 150px;
+        height: auto;
+    }
+
+    .school_info {
+        width: min(200px, calc(100% - 30px));
+        margin: 30px auto 0;
+    }
+
+    .contact_row1 input,
+    .contact_row2 input,
+    .contact_row3 input {
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+    }
+}

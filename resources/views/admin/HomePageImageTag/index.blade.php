@@ -1,80 +1,97 @@
 @extends('layouts.adminLayout')
-@section('title')
-Admin - Kateogry
 
-@endsection
+@section('title', __('message.homepage_tag_list'))
+
 @section('content')
-
 <div class="main-content">
-        <section class="section">
-            <div class="row">
-            <div class="col-md-12">
+    <section class="section">
+        <div class="container-fluid">
             <style>
-    .main-content {
-        margin-left: 250px; /* Sidebar kengligi bilan mos bo‘lishi kerak */
-        padding: 20px;
-    }
-</style>
+                .main-content {
+                    margin-left: 250px; /* Sidebar kengligi bilan mos bo‘lishi kerak */
+                    padding: 20px;
+                }
 
-                                    @if (session('success'))
-                          <div id="flash-message" class="alert alert-success">
-                              {{ session('success') }}
-                          </div>
-                      @endif
+                .table th, .table td {
+                    text-align: center;
+                    vertical-align: middle !important;
+                }
 
-                      <script>
+                .btn {
+                    margin: 2px;
+                }
 
-                          setTimeout(function() {
-                              var flash = document.getElementById('flash-message');
-                              if (flash) {
-                                  flash.style.display = 'none';
-                              }
-                          }, 3000);
-                      </script>
+                #flash-message {
+                    animation: fadeOut 3s ease forwards;
+                }
 
+                @keyframes fadeOut {
+                    0% { opacity: 1; }
+                    90% { opacity: 1; }
+                    100% { opacity: 0; display: none; }
+                }
+            </style>
 
-                <a href="{{ route('admin.HomePageImageTag.create') }}" class="btn btn-primary">Create</a>
-              <div class="card-body">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">title_uz</th>
-                          <th scope="col">title_ru</th>
-                           <th scope="col">body_uz</th>
-                            <th scope="col">body_ru</th>
-                          <th scope="col">Action</th>
+            {{-- Flash xabar --}}
+            @if (session('success'))
+                <div id="flash-message" class="alert alert-success text-center">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-                        </tr>
-                      </thead>
-                      <tbody>
-                        @foreach($HomePageImageTag as $homepage)
-                        <tr>
-                          <th scope="row">{{ $homepage->id }}</th>
-                          <td>{{ $homepage->title_uz }}</td>
-                          <td>{{ $homepage->title_ru }}</td>
-                           <td>{{ $homepage->body_uz }}</td>
-                            <td>{{ $homepage->body_ru }}</td>
-                          <td class="d-flex justify-content-center align-items-center">
-                            <form action="{{ route('admin.HomePageImageTag.destroy', $homepage->id) }}" method = "POST" >
-                              @csrf
-                              @method('DELETE')
-                              <button class = 'btn btn-danger'>Delete</button>
-                            </form>
-                             
-                          </td>
-                        </tr>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">🏷️ {{ __('message.homepage_tag_list') }}</h4>
+                    <a href="{{ route('admin.HomePageImageTag.create') }}" class="btn btn-primary">
+                        + {{ __('message.create_new') }}
+                    </a>
+                </div>
 
-                        @endforeach
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>{{ __('message.title_uz') }}</th>
+                                <th>{{ __('message.title_ru') }}</th>
+                                <th>{{ __('message.content_uz') }}</th>
+                                <th>{{ __('message.content_ru') }}</th>
+                                <th>{{ __('message.actions') }}</th>
+                            </tr>
+                        </thead>
 
+                        <tbody>
+                            @forelse($homePageImageTags as $homepage)
+                                <tr>
+                                    <td>{{ $homepage->id }}</td>
+                                    <td>{{ $homepage->title_uz }}</td>
+                                    <td>{{ $homepage->title_ru }}</td>
+                                    <td>{{ Str::limit($homepage->body_uz, 60) }}</td>
+                                    <td>{{ Str::limit($homepage->body_ru, 60) }}</td>
+                                    <td class="d-flex justify-content-center align-items-center">
+                                        <a href="{{ route('admin.HomePageImageTag.edit', $homepage->id) }}" class="btn btn-sm btn-primary">
+                                            {{ __('message.edit') }}
+                                        </a>
 
-                      </tbody>
+                                        <form action="{{ route('admin.HomePageImageTag.destroy', $homepage->id) }}" method="POST"
+                                              onsubmit="return confirm('{{ __('message.confirm_delete') }}');"
+                                              style="display:inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger">{{ __('message.delete') }}</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">{{ __('message.no_information') }}</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
                     </table>
-                  </div>
+                </div>
             </div>
-              </div>
-
+        </div>
     </section>
 </div>
-
 @endsection

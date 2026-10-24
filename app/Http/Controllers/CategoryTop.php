@@ -14,7 +14,7 @@ class CategoryTop extends Controller
     public function index()
     {
         $categoryTop = CategoryTopp::all();
-        return view('admin.categoryTop.index', compact('categoryTop'));
+        return view('admin.CategoryTop.index', compact('categoryTop'));
     }
 
     /**
@@ -22,7 +22,7 @@ class CategoryTop extends Controller
      */
     public function create()
     {
-        return view('admin.categoryTop.create');
+        return view('admin.CategoryTop.create');
     }
 
     /**
@@ -30,17 +30,10 @@ class CategoryTop extends Controller
      */
     public function store(Request $request)
     {
-        // Ma'lumotlarni tekshirish
-        $validatedData = $request->validate([
-            'name_uz' => 'required|string|max:255',
-            'name_ru' => 'required|string|max:255',
-            'url' => 'required|string|max:255',
-        ]);
+        $validatedData = $this->validated($request);
 
-        // Ma'lumotlarni saqlash
         CategoryTopp::create($validatedData);
 
-        // Foydalanuvchini qayta yo'naltirish
         return redirect()->route('admin.CategoryTop.index')->with('success', 'Kategoriya muvaffaqiyatli yaratildi!');
     }
 
@@ -68,14 +61,44 @@ class CategoryTop extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name_uz' => 'required|string|max:255',
-            'name_ru' => 'required|string',
-            'url' => 'required|string|max:255',
+        $validatedData = $this->validated($request);
+
+        $category = CategoryTopp::findOrFail($id);
+        $category->update($validatedData);
+
+        return redirect()->route('admin.CategoryTop.index')->with('success', 'Kategoriya havolasi yangilandi.');
+    }
+
+    protected function validated(Request $request): array
+    {
+        return $request->validate([
+            'name_uz' => ['required', 'string', 'max:255'],
+            'name_ru' => ['required', 'string', 'max:255'],
+            'url' => [
+                'required',
+                'string',
+                'max:255',
+                function (string $attribute, string $value, \Closure $fail): void {
+                    $value = trim((string) $value);
+
+                    $scheme = parse_url($value, PHP_URL_SCHEME);
+                    $isHttpUrl = in_array(strtolower((string) $scheme), ['http', 'https'], true)
+                        && filter_var($value, FILTER_VALIDATE_URL) !== false;
+
+                    $isInternalPath = $value !== ''
+                        && !str_contains($value, ' ')
+                        && !str_contains($value, "\n")
+                        && !str_contains($value, "\r")
+                        && !str_contains($value, "\t")
+                        && !str_contains(strtolower($value), 'javascript:')
+                        && !str_starts_with(strtolower($value), 'data:');
+
+                    if (!$isHttpUrl && !$isInternalPath) {
+                        $fail('URL https:// manzil yoki sayt ichidagi yo‘l bo‘lishi kerak.');
+                    }
+                },
+            ],
         ]);
-        $category = CategoryTopp::find($id);
-        $category->update($request->all());
-        return redirect()->route('admin.CategoryTop.index')->with('success', 'Post yangilandi!');
     }
 
     /**

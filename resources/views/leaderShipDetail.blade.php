@@ -175,7 +175,6 @@
                                                 </ul>
                                         </ul>
                                         <ul class="simple">
-                                            <li><a href="usefulResurs.html">Foydali resurslar</a></li>
                                             <li><a href="connect.html">Bogʻlanish</a></li>
                                         </ul>
                                     </div>
@@ -240,7 +239,6 @@
                                             </ul>
                                         </li>
                                         <li>
-                                            <a href="usefulResurs.html">Foydali resurslar </a>
                                         </li>
                                         <li>
                                             <a href="schoolNews.html">Axborot markazi </a>
@@ -336,7 +334,7 @@
                             <div class="contactInfo">
                                 <div>
                                     <i class="far fa-clock"></i>
-                                    <span>Chorshanba soat 16:00 dan 18:00 gacha</span>
+                                    <span>Chorshanba soat 23:00 dan 18:00 gacha</span>
                                 </div>
 
                                 <div>

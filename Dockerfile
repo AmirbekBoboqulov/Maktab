@@ -31,4 +31,4 @@ RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoload
 COPY --from=frontend /app/public/build /var/www/html/public/build
 
 EXPOSE 10000
-CMD ["apache2-foreground"]
+CMD ["sh", "-c", "port=${PORT:-10000}; sed -ri \"s/Listen 80/Listen ${port}/\" /etc/apache2/ports.conf; sed -ri \"s/:80>/:${port}>/\" /etc/apache2/sites-available/000-default.conf; exec apache2-foreground"]

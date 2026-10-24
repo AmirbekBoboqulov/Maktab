@@ -100,30 +100,29 @@
                                     </div>
                                     <div class="listMenu">
                                         <ul>
-                                            <li><a href="#">Maktab haqida</a>
+                                            <li><a href="{{ route('schooltack') }}">Maktab haqida</a>
                                                 <ul>
-                                                    <li><a href="schoolTasks.html">Maktab vazifalari</a></li>
-                                                    <li><a href="leaderShip.html">Rahbariyat</a></li>
-                                                    <li><a href="teachers.html">O'qituvchilar</a></li>
-                                                    <li><a href="rekvizit.html">Rekvizitlar</a></li>
+                                                    <li><a href="{{ route('schooltack') }}">Maktab vazifalari</a></li>
+                                                    <li><a href="{{ route('leaderShep') }}">Rahbariyat</a></li>
+                                                    <li><a href="{{ route('teachers') }}">O'qituvchilar</a></li>
+                                                    <li><a href="{{ route('rekvizit') }}">Rekvizitlar</a></li>
                                                 </ul>
-                                            <li><a href="education.html">Ta'lim</a>
+                                            <li><a href="{{ route('education') }}">Ta'lim</a>
                                                 <ul>
-                                                    <li><a href="education.html">1-smena</a></li>
-                                                    <li><a href="education.html">2-smena</a></li>
-                                                    <li><a href="education.html">Qo'shimcha darslar </a></li>
-                                                    <li><a href="education.html">Sport to'garaklar</a></li>
+                                                    <li><a href="{{ route('education') }}">1-smena</a></li>
+                                                    <li><a href="{{ route('education') }}">2-smena</a></li>
+                                                    <li><a href="{{ route('education') }}">Qo'shimcha darslar </a></li>
+                                                    <li><a href="{{ route('education') }}">Sport to'garaklar</a></li>
                                                 </ul>
-                                            <li><a href="schoolNews.html">Axborot markazi</a>
+                                            <li><a href="{{ route('schoolNews') }}">Axborot markazi</a>
                                                 <ul>
-                                                    <li><a href="schoolNews.html">Maktab yangiliklari</a></li>
-                                                    <li><a href="Gallery.html">Galeriya</a></li>
-                                                    <li><a href="infoGrafika.html">Infografika</a></li>
+                                                    <li><a href="{{ route('schoolNews') }}">Maktab yangiliklari</a></li>
+                                                    <li><a href="{{ route('Gallery') }}">Galeriya</a></li>
+                                                    <li><a href="{{ route('infoGrafika') }}">Infografika</a></li>
                                                 </ul>
                                         </ul>
                                         <ul class="simple">
-                                            <li><a href="usefulResurs.html">Foydali resurslar</a></li>
-                                            <li><a href="connect.html">Bogʻlanish</a></li>
+                                            <li><a href="{{ route('connect') }}">Bogʻlanish</a></li>
                                         </ul>
                                     </div>
                                     <div class="topMainMenu2">
@@ -187,7 +186,6 @@
                                             </ul>
                                         </li>
                                         <li>
-                                            <a href="usefulResurs.html">Foydali resurslar </a>
                                         </li>
                                         <li>
                                             <a href="schoolNews.html">Axborot markazi </a>

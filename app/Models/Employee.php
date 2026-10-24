@@ -11,7 +11,7 @@ class Employee extends Model
         return $this->belongsTo(Position::class);
     }
     public function category() {
-        return $this->belongsTo(empCategory::class);
+        return $this->belongsTo(empCategory::class, 'category_id');
     }
     public function schudel() {
         return $this->belongsTo(Schudeli::class);
@@ -20,5 +20,10 @@ class Employee extends Model
 {
     return $this->belongsTo(Education::class);
 }
+
+    public function lesson()
+    {
+        return $this->belongsTo(Lesson::class);
+    }
 
 }

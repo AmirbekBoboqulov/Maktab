@@ -61,7 +61,15 @@ class empCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $requestData = $request->validate([
+            'name_uz' => 'required',
+            'name_ru' => 'required',
+        ]);
+
+        $empCategory = empCategory::findOrFail($id);
+        $empCategory->update($requestData);
+
+        return redirect()->route('admin.empCategory.index')->with('success', 'Employee category updated successfully.');
     }
 
     /**

@@ -64,7 +64,15 @@ class PositionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $requestData = $request->validate([
+            'name_uz' => 'required',
+            'name_ru' => 'required',
+        ]);
+
+        $position = Position::findOrFail($id);
+        $position->update($requestData);
+
+        return redirect()->route('admin.position.index')->with('success', 'Position updated successfully.');
     }
 
     /**

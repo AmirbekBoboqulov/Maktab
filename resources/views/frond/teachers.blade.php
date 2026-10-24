@@ -1,120 +1,168 @@
 @extends('admin.site')
+
 @section('content')
 
+<style>
+/* 🔹 Umumiy bo‘lim */
+.teachers-section {
+    background: #f8f9ff;
+    padding: 80px 0;
+    font-family: "Poppins", sans-serif;
+}
 
-    <style>
-        .categoriesContainer {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            padding: 20px;
-        }
+/* 🔹 Grid joylashuvi — 3ta ustun */
+.teachers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
 
-        .categoryCard {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            padding: 20px;
-            flex: 1 1 400px; /* kartalar 400px dan kichik bo‘lmasin, lekin joyga qarab kengaysin */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        }
+/* 🔹 Har bir karta */
+.teacher-card {
+    background: #fff;
+    border-radius: 20px;
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.35s ease;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    border: none;
+    position: relative;
+}
 
-        .categoryCard h1 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #2c3e50;
-            border-bottom: 2px solid #007BFF;
-            padding-bottom: 8px;
-        }
+.teacher-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
 
-        .teacherCard {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            padding: 15px;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-            background-color: #fafafa;
-            transition: box-shadow 0.3s ease;
-        }
+/* 🔹 Rasm qismi */
+.teacher-photo {
+    width: 100%;
+    height: 330px;
+    overflow: hidden;
+    background: #f0f2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 5px solid #004aad;
+}
 
-        .teacherCard:hover {
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-        }
+.teacher-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* ✅ rasm butunlay chiqadi, kesilmaydi */
+    transition: transform 0.4s ease;
+}
 
-        .photo img {
-            max-width: 150px;
-            max-height: 150px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 2px solid #ccc;
-        }
+.teacher-card:hover .teacher-photo img {
+    transform: scale(1.03);
+}
 
-        .description h2 {
-            margin: 0 0 8px 0;
-            font-size: 20px;
-            color: #333;
-        }
+/* 🔹 Ma’lumot qismi */
+.teacher-info {
+    padding: 25px 20px 35px;
+    background: #fff;
+    position: relative;
+}
 
-        .description p {
-            margin: 3px 0;
-            color: #555;
-            font-size: 15px;
-        }
+.teacher-info h3 {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #222;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
 
-        .description a {
-            color: #007BFF;
-            text-decoration: none;
-        }
+.teacher-info .subject {
+    font-size: 15px;
+    color: #004aad;
+    font-weight: 600;
+    display: inline-block;
+    border-bottom: 2px solid #004aad;
+    padding-bottom: 3px;
+}
 
-        .description a:hover {
-            text-decoration: underline;
-        }
-    </style>
+/* 🔹 Hover chiziq */
+.teacher-card::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0%;
+    height: 4px;
+    background: linear-gradient(90deg, #004aad, #00a6ff);
+    transition: 0.4s ease;
+    border-radius: 0 0 10px 10px;
+    transform: translateX(-50%);
+}
+.teacher-card:hover::after {
+    width: 100%;
+}
 
-    <div class="mainContent withImage">
-                <div class="imageHeader" style="padding-bottom: 0px;">
-                    <div class="container">
-                        <h1 class="pageTitle text-dark">{{ __('message.O`qituvchilar') }}</h1>
-                        <nav aria-label="breadcrumb">
-                            <ol id="w5" class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('index') }}">{{__('message.home')}}</a></li>
-                                <li class="breadcrumb-item " aria-current="page">{{ __('message.O`qituvchilar') }}</li>
-                            </ol>
-                        </nav>
+/* 🔹 Responsiv (telefon va planshet) */
+@media (max-width: 1200px) {
+    .teachers-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .teachers-grid {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+    }
+    .teacher-photo {
+        height: 260px;
+    }
+}
+</style>
+
+<div class="mainContent withImage">
+    <div class="imageHeader" style="padding-bottom: 0px;">
+        <div class="container">
+            <h1 class="pageTitle text-dark">{{ __('message.O`qituvchilar') }}</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('index') }}">{{ __('message.home') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('message.O`qituvchilar') }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- 🔹 Asosiy qism -->
+<main class="teachers-section">
+    <div class="teachers-grid">
+        @foreach($teachers as $categoryName => $teachersGroup)
+            @foreach($teachersGroup as $teacher)
+                <div class="teacher-card">
+                    <a href="{{ route('teacher.detail', $teacher->id) }}" 
+                       title="{{ $teacher['name_' . app()->getLocale()] }}" 
+                       style="text-decoration:none; color:inherit;">
+                        <div class="teacher-photo">
+                            @if(!empty($teacher->image) && file_exists(public_path('admin/images/' . $teacher->image)))
+                                <img src="{{ asset('admin/images/' . $teacher->image) }}" 
+                                     alt="{{ $teacher['name_' . app()->getLocale()] }}">
+                            @else
+                                <img src="{{ asset('image/23-maktab-logo.svg') }}" alt="23-maktab logotipi">
+                            @endif
+                        </div>
+                    </a>
+
+                    <div class="teacher-info">
+                        <h3>{{ $teacher['name_' . app()->getLocale()] }}</h3>
+                        <div class="subject">
+                            {{ $teacher->position['name_' . app()->getLocale()] ?? 'Belgilanmagan' }}
+                        </div>
                     </div>
                 </div>
+            @endforeach
+        @endforeach
+    </div>
+</main>
 
-            </div>
-
-    <main>
-        <section>
-            <div class="categoriesContainer">
-
-                @foreach($teachers as $categoryName => $teachersGroup)
-                    <div class="categoryCard">
-                        <h1>{{ $categoryName }}</h1>
-
-                        @foreach($teachersGroup as $teacher)
-                            <div class="teacherCard">
-                                <div class="photo">
-                                    <img alt="image" src="{{ asset('admin/images/' . $teacher->image) }}">
-                                </div>
-                                <div class="description">
-                                    <h2>{{ $teacher['name_'.\App::getLocale()] }}</h2>
-                                    <p>Lavozimi: {{ $teacher->position['name_'.\App::getLocale()] ?? 'Belgilanmagan' }}</p> 
-                                    <p>Telefon: <a href="tel:{{ $teacher->phone }}">{{ $teacher->phone }}</a></p>
-                                    <p>Email: <a href="mailto:{{ $teacher->email }}">{{ $teacher->email }}</a></p>
-                                </div>
-                            </div>
-                        @endforeach
-
-                    </div>
-                @endforeach
-
-            </div>
-        </section>
-    </main>
 @endsection

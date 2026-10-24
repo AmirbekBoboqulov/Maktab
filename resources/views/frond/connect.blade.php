@@ -21,13 +21,13 @@
                 <div class="mapArea">
                     <div class="row">
                         <div class="col-12 mt-4">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2877.6312216222764!2d68.65971677583921!3d40.64254507140419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38adf1f01a72e16b%3A0xf961092c1883a3d5!2s16.maktab!5e1!3m2!1suz!2s!4v1761485704098!5m2!1suz!2s"
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2884.3379539597718!2d68.93631288257193!3d40.42988369253685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38b1f827940c8e03%3A0xb75f83c93484c93e!2sCWJR%2B438%20School%20N23%2C%20Unnamed%20Road%2C%20Boyovut%2C%20Sirdaryo%20viloyati%2C%20Uzbekistan!5e1!3m2!1sen!2s!4v1788356240614!5m2!1sen!2s"
                                     width="100%"
                                     height="550"
                                     style="border:0;"
                                     allowfullscreen=""
                                     loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                    referrerpolicy="strict-origin-when-cross-origin"></iframe>
                         </div>
                     </div>
                 </div>
@@ -67,29 +67,29 @@
                             </form>
                         </div>
                         <div class="col-md-5">
-                            <h2 class="mb-3">{{ __('message.27mak') }}</h2>
+                            <h2 class="mb-3">{{ __('message.school_name_short') }}</h2>
 
                             <table id="w9" class="table table-striped table-bordered detail-view">
                                 <tbody>
                                 <tr>
                                     <th>{{ __('message.Mudir') }}:</th>
-                                    <td>Jalolv Behruz</td>
+                                    <td>Boboyeva Dilafruz</td>
                                 </tr>
                                 <tr>
                                     <th>{{ __('message.Telefon') }}:</th>
-                                    <td>+99891-191-84-48</td>
+                                    <td>+99888-121-68-86</td>
                                 </tr>
                                 <tr>
                                     <th>{{ __('message.Faks') }}:</th>
-                                    <td>+99891-191-84-48</td>
+                                    <td>+99888-121-68-86</td>
                                 </tr>
                                 <tr>
                                     <th>{{ __('message.instagram') }}:</th>
-                                    <td>@27-maktab</td>
+                                    <td>@23-maktab</td>
                                 </tr>
                                 <tr>
                                     <th>{{ __('message.telegram') }}:</th>
-                                    <td>@27-maktab</td>
+                                    <td>23_maktab</td>
                                 </tr>
                                 </tbody>
                             </table>

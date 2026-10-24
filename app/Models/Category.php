@@ -10,7 +10,7 @@ class Category extends Model
     // Category.php
     public function children()
 {
-    return $this->hasMany(CategoryChildren::class, 'category_id');
+        return $this->hasMany(Categorychildren::class, 'category_id');
 }
 
 

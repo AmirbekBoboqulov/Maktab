@@ -22,6 +22,11 @@
                 </a>
             </div>
 
+            <nav class="mt-4 flex gap-4" aria-label="Language">
+                <a href="{{ url('/lang/uz') }}" lang="uz">O‘zbekcha</a>
+                <a href="{{ url('/lang/ru') }}" lang="ru">Русский</a>
+            </nav>
+
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>

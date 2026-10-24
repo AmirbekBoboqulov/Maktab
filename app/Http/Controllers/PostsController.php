@@ -22,12 +22,12 @@ class PostsController extends Controller
     public function index()
     {
         $posts = Post::all();
-        return view('admin.posts.index', compact('posts'));
+        return view('admin.Posts.index', compact('posts'));
     }
 
     public function create()
     {
-        return view('admin.posts.create');
+        return view('admin.Posts.create');
     }
 
     public function store(Request $request)
@@ -61,22 +61,32 @@ class PostsController extends Controller
 
     public function show(Post $post)
     {
-        return view('admin.posts.show', compact('post'));
+        return view('admin.Posts.show', compact('post'));
     }
 
     public function edit(Post $post)
     {
-        return view('admin.posts.edit', compact('post'));
+        return view('admin.Posts.edit', compact('post'));
     }
 
     public function update(Request $request, Post $post)
     {
-        $request->validate([
-            'title' => 'required',
-            'content' => 'required',
+        $requestData = $request->validate([
+            'title_uz' => 'required|string|max:255',
+            'title_ru' => 'required|string|max:255',
+            'body_uz' => 'required|string',
+            'body_ru' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $post->update($request->all());
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imageName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('admin/images/'), $imageName);
+            $requestData['image'] = $imageName;
+        }
+
+        $post->update($requestData);
 
         return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully.');
     }

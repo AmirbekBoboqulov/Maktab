@@ -38,11 +38,13 @@ class SchudeliController extends Controller
         $requestData = $request->validate([
             'smena_id' => 'required',
             'lesson_id' => 'required',
-            'week_day' => 'required',
+            'week_day' => 'required|array',
             'room' =>  'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp,pdf',
             'time' => 'required',
         ]);
+        // Save selected classes as comma-separated string
+        $requestData['week_day'] = implode(',', $request->input('week_day', []));
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $imageName = time() . '.' . $file->getClientOriginalExtension();
@@ -60,7 +62,8 @@ class SchudeliController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $schedule = Schudeli::with(['smena', 'lesson'])->findOrFail($id);
+        return view('admin.schudeli.show', compact('schedule'));
     }
 
     /**
@@ -68,7 +71,12 @@ class SchudeliController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $schedule = Schudeli::findOrFail($id);
+        $smenatype = SmenaType::all();
+        $lessons = Lesson::all();
+        $selectedClasses = $schedule->week_day ? explode(',', $schedule->week_day) : [];
+
+        return view('admin.schudeli.edit', compact('schedule', 'smenatype', 'lessons', 'selectedClasses'));
     }
 
     /**
@@ -76,7 +84,29 @@ class SchudeliController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $schedule = Schudeli::findOrFail($id);
+
+        $requestData = $request->validate([
+            'smena_id' => 'required',
+            'lesson_id' => 'required',
+            'week_day' => 'required|array',
+            'room' =>  'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp,pdf',
+            'time' => 'required',
+        ]);
+
+        $requestData['week_day'] = implode(',', $request->input('week_day', []));
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imageName = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('admin/images/'), $imageName);
+            $requestData['image'] = $imageName;
+        }
+
+        $schedule->update($requestData);
+
+        return redirect()->route('admin.schedule.index')->with('success', 'Jadval yangilandi');
     }
 
     /**

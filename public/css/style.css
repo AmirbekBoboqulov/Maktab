@@ -885,18 +885,27 @@ ul li {
     padding: 70px 0;
 }
 
-.contact_row1 input {
-    padding: 10px 17px;
-    width: 331px;
-    border-radius: 10px;
-    border-color: #1e264b;
-    margin-bottom: 30px;
-    margin-top: 10px;
+.contact form {
+    width: 100%;
 }
 
+.contact_row1,
+.contact_row2 {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -12px;
+}
+
+.contact_row1 .col-lg-6,
+.contact_row2 .col-lg-6 {
+    padding: 0 12px;
+}
+
+.contact_row1 input,
 .contact_row2 input {
     padding: 10px 17px;
-    width: 331px;
+    width: 100%;
+    max-width: 100%;
     border-radius: 10px;
     border-color: #1e264b;
     margin-bottom: 30px;
@@ -907,17 +916,17 @@ ul li {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0;
 }
 
 .contact_row3 input {
-    padding-bottom: 60px;
-    padding-left: 17px;
-    width: 97%;
+    padding: 14px 17px 60px;
+    width: 100%;
     height: 100px;
     border-radius: 10px;
     border-color: #1e264b;
     margin-bottom: 30px;
-    margin-left: 11px;
+    margin-left: 0;
 }
 
 .contact_btn {
@@ -1030,6 +1039,13 @@ ul li {
 .footer {
     background: #143797;
     padding: 30px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer_inner {
+    position: relative;
+    z-index: 1;
 }
 
 .footer_menu {
@@ -1107,14 +1123,26 @@ ul li {
     transform: translateX(-50%);
 }
 
-a.it_live-logo {
-    display: table;
+a.it_live-logo,
+.it_live-logo {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding-top: 20px;
+    z-index: 0;
+    opacity: 0.92;
+    pointer-events: none;
 }
 
 .it_live-img {
-    width: 10%;
+    width: 180px;
+    max-width: 28vw;
+    height: auto;
+    filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.16));
 }
 
 .year_text {
@@ -1124,6 +1152,8 @@ a.it_live-logo {
     font-size: 18px;
     color: #fff;
     margin: 25px 0;
+    position: relative;
+    z-index: 1;
 }
 
 
@@ -1133,7 +1163,7 @@ a.it_live-logo {
     position: absolute;
     margin-top: 70px;
     margin-left: 75px;
-    z-index: 1;
+    z-index: 2;
 }
 
 .footer_contact-left a:hover {
@@ -1172,7 +1202,7 @@ a.it_live-logo {
     right: 0;
     margin-top: 70px;
     margin-right: 185px;
-    z-index: 1;
+    z-index: 2;
 }
 
 .footer .footer_contact-right a {

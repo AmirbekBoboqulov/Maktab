@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class empCategory extends Model
 {
     protected $guarded = [];
-    
-    public function employee() {
-    return $this->hasMany(Employee::class, 'emp_category_id');
-}
 
+    public function employee()
+    {
+        return $this->hasMany(Employee::class, 'category_id');
+    }
 }

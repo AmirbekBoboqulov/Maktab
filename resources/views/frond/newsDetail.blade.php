@@ -29,12 +29,12 @@
                         <div class="col-lg-6 col-md-12 col-sm-12">
                             <div class="titleBox">
                                 <h1>{{ $post->{'title_' . app()->getLocale()} }}</h1>
-                                <span>{{ $post->created_at->format('d F Y') }}</span>
+                                <span>{{ $post->created_at->locale(app()->getLocale())->translatedFormat('d F Y') }}</span>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-12 col-sm-12">
                             <div class="titleBox_img">
-                                <img alt="image" src="{{ asset('admin/images/' . $post->image) }}" width="70%">
+                                <img alt="image" src="{{ $post->image && file_exists(public_path('admin/images/' . $post->image)) ? asset('admin/images/' . $post->image) : asset('admin/images/1747704545.jpg') }}" width="70%">
                             </div>
                         </div>
                     </div>
