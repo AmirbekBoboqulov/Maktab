@@ -11,276 +11,259 @@ use App\Models\InfoGrafika;
 use App\Models\Position;
 use App\Models\Post;
 use App\Models\Schudeli;
-use \App\Models\HomePageImageTag;
-use \App\Models\SmenaType;
+use App\Models\HomePageImageTag;
+use App\Models\ParentInfo;
+use App\Models\SmenaType;
 use App\Models\Statictik;
 use App\Models\UsefulResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Message;
-use Illuminate\Support\Facades\App;
-
-
-
-
 
 class FrondController extends Controller
 {
     protected $categories;
     protected $categoryTop;
 
+    protected function safeCollection($callback, $default = [])
+    {
+        try {
+            $result = $callback();
+            return $result instanceof \Illuminate\Support\Collection ? $result : collect($result);
+        } catch (\Throwable $e) {
+            return collect($default);
+        }
+    }
 
+    protected function safeValue($callback, $default = null)
+    {
+        try {
+            return $callback();
+        } catch (\Throwable $e) {
+            return $default;
+        }
+    }
 
-    public function __construct() {
-        $this->categories = Category::all();
-        $this->categoryTop = CategoryTopp::all();
+    public function __construct()
+    {
+        $this->categories = $this->safeCollection(fn () => Category::all());
+        $this->categoryTop = $this->safeCollection(fn () => CategoryTopp::all());
 
-
-        // Blade view'larda avtomatik ishlatish uchun:
         view()->share('categories', $this->categories);
         view()->share('categoryTop', $this->categoryTop);
-
+        view()->share('smenaType', $this->safeCollection(fn () => SmenaType::all()));
     }
 
+    // 🏠 Bosh sahifa
+    public function index()
+    {
+        $statictik = $this->safeCollection(fn () => Statictik::all());
+        $posts = $this->safeCollection(fn () => Post::all());
+        $HomePageImageTag = $this->safeCollection(fn () => HomePageImageTag::latest()->first());
+        $schedule = $this->safeCollection(fn () => Schudeli::with('smena')->get());
+        $usefulResources = $this->safeCollection(fn () => UsefulResource::latest()->take(4)->get());
+        $parentInfo = $this->safeCollection(fn () => ParentInfo::latest()->first());
+        $teacherCount = $this->safeValue(fn () => Employee::count(), 0);
 
-
-
-
-public function index()
+        return view('index', compact('statictik', 'posts', 'HomePageImageTag', 'schedule', 'usefulResources', 'parentInfo', 'teacherCount'));
+    }
+public function schoolTack()
 {
-
-
-    $categories = Category::all();
-    $statictik = Statictik::all();
-    $posts = Post::all();
-    $HomePageImageTag = HomePageImageTag::all();  // shu qator juda muhim
-    $schedule = Schudeli::with('smena')->get();
-
-
-    return view('index', compact('statictik', 'posts', 'HomePageImageTag','schedule','categories'));
+    return view('frond.schoolTack');
 }
-   public function schoolTack(Request $request)
-{
-    $categoryId = $request->category;
 
-    // Kerakli kategoriyani topish yoki shu bo‘yicha filtering qilish
-    $category = Category::with('children')->find($categoryId);
-
-    return view('frond.schoolTack', compact('category'));
-}
-    public function LeaderShepDatail() {
+    // 👨‍💼 Rahbariyat
+    public function leaderShep()
+    {
         $teachers = Employee::with(['position', 'category'])
             ->whereHas('category', function ($query) {
-                $query->where('name_uz', 'Rahbariyat');
-            })
-            ->get();
-        return view('frond.LeaderShepDeatil',compact('teachers'));
-    }
-  public function searchPosts(Request $request)
-{
-    // Qidiruv so'rovini olish
-    $query = $request->input('query');
-
-    // Postlar modelida qidiruvni amalga oshirish
-    $posts = Post::query();
-
-    if ($query) {
-        $posts = $posts->where('title_uz', 'like', "%{$query}%")
-                       ->orWhere('title_uz', 'like', "%{$query}%")
-                        ->orWhere('body_uz', 'like', "%{$query}%")
-                         ->orWhere('body_ru', 'like', "%{$query}%"); // content - agar matn bor bo'lsa
-    }
-
-
-    $posts = $posts->get();
-
-    return view('frond.schoolNews', compact('posts', 'query'));
-}
-
-
-
-    public function leaderShep() {
-        $teachers = Employee::with(['position', 'category'])
-            ->whereHas('position', function ($query) {
-                $query->where('name_uz', 'Direktor')
-                    ->orWhere('name_ru', 'Директор');
+                $query->whereIn('name_uz', [
+                    'Direktor',
+                    'Psixolog',
+                    'Direktor Yordamchisi',
+                    'Metodist',
+                    'Rahbariyat'
+                ]);
             })
             ->get();
 
-        return view('frond.LeaderShepDeatil', compact('teachers'));
+        return view('frond.leaderShep', compact('teachers'));
     }
 
+    public function leaderShepDetail($id)
+    {
+        $leader = Employee::with(['position', 'category'])->findOrFail($id);
+        return view('frond.leaderShepDetail', compact('leader'));
+    }
 
+    // 🏫 Maktab yangiliklari
+    public function schoolNews()
+    {
+        $posts = Post::latest()->get();
+        return view('frond.schoolNews', compact('posts'));
+    }
 
+    public function newsDetail($id)
+    {
+        $post = Post::findOrFail($id);
+        return view('frond.newsDetail', compact('post'));
+    }
 
-
-
-
+    // 👩‍🏫 O‘qituvchilar
     public function teachers(Request $request)
     {
         $query = $request->input('query');
 
-        // variantlarni hisobga olamiz: apostrof/kovichka farqlari bo'lishi mumkin
-        $teacherNamesUz = [
-            "O'qituvchi",  // ascii apostrof
-            "O`qituvchi",  // backtick variant
-            "O‘qituvchi",  // unicode left single quote
-            "O’qituvchi",  // unicode right single quote
-            "Oqituvchi",   // ehtimol apostrofsiz
-            "Oʻqituvchi",  // boshqacha unicode
-        ];
-
         $teachersQuery = Employee::with(['position', 'category'])
-            // kategoriya Rahbariyat bo'lmaganlarni olamiz (agar shu requirement bo'lsa)
             ->whereHas('category', function ($q) {
-                $q->where('name_uz', '!=', 'Rahbariyat');
-            })
-            ->whereHas('position', function ($q) use ($teacherNamesUz) {
-                // har bir variant uchun yoki ruscha 'Учитель'
-                $q->where(function($qq) use ($teacherNamesUz) {
-                    foreach ($teacherNamesUz as $nameVariant) {
-                        $qq->orWhere('name_uz', $nameVariant);
-                    }
-                    $qq->orWhere('name_ru', 'Учитель')
-                        ->orWhere('name_ru', 'Учительница'); // agar turli formalar bo'lsa
-                });
+                $q->where('name_uz', 'like', '%o‘qituvchi%')
+                    ->orWhere('name_uz', 'like', "%O'qituvchi%")
+                    ->orWhere('name_uz', 'like', "%O`qituvchi%");
             });
 
         if ($query) {
             $teachersQuery->where(function ($q) use ($query) {
                 $q->where('name_uz', 'like', "%{$query}%")
-                    ->orWhere('name_ru', 'like', "%{$query}%")
-                    ->orWhereHas('category', function ($cat) use ($query) {
-                        $cat->where('name_uz', 'like', "%{$query}%")
-                            ->orWhere('name_ru', 'like', "%{$query}%");
-                    });
+                    ->orWhere('name_ru', 'like', "%{$query}%");
             });
         }
 
         $teachers = $teachersQuery->get()
-            ->groupBy(fn($item) => $item->category ? $item->category['name_'. \App::getLocale()] : 'Boshqa toifa');
+            ->groupBy(fn($item) => $item->category ? $item->category['name_' . app()->getLocale()] : 'Boshqa toifa');
 
-        $categories = Category::all();
-        $categoryTop = CategoryTopp::all();
-
-        return view('frond.teachers', compact('teachers', 'categoryTop', 'categories', 'query'));
+        return view('frond.teachers', compact('teachers'));
     }
 
+    public function teacherDetail($id)
+    {
+        $teacher = Employee::with(['position', 'category'])->findOrFail($id);
+        return view('frond.teacherDetail', compact('teacher'));
+    }
 
-    public function rekvizit() {
-
+    public function rekvizit()
+    {
         return view('frond.rekvizit');
     }
 
-
-public function educationByCategory($slug)
-{
-    $category = empCategory::where('slug', $slug)->firstOrFail();
-
-    $teachers = Employee::where('emp_category_id', $category->id)->get();
-
-    return view('frontend.pages.education_by_category', compact('category', 'teachers'));
-}
-
-public function schoolNews(){
-        $posts = Post::latest()->take(3)->get();
-        return view('frond.schoolNews',compact('posts'));
-    }
-    public function newsDetail($id){
-    $post = Post::findOrFail($id); // bu yerda bitta post olinadi
-    return view('frond.newsDetail', compact('post'));
-}
-
-
-
-
-
-
-
-
     public function education(Request $request)
-{
+    {
+        $query = $request->input('query');
+        $categoryId = $request->input('category');
 
-    $query = $request->input('query');
-    $categoryId = $request->input('category');
+        $queryBuilder = Schudeli::query();
 
-    $queryBuilder = Schudeli::query();
+        if ($query) $queryBuilder->where('week_day', 'like', "%{$query}%");
+        if ($categoryId) $queryBuilder->where('smena_id', $categoryId);
 
-    if ($query) {
-        $queryBuilder->where('week_day', 'like', "%{$query}%");
+        $educations = $queryBuilder->get();
+        return view('frond.education', compact('educations'));
     }
 
-    if ($categoryId) {
-        $queryBuilder->where('category_id', $categoryId);
+    public function educationSearch(Request $request)
+    {
+        return $this->education($request);
     }
 
-    $educations = $queryBuilder->get();
-
-    $smenaType = SmenaType::all();
-
-    return view('frond.education', compact('educations', 'smenaType'));
-}
-
-
-public function educationDetail($id)
-{
-    $schedule = Schudeli::find($id);
-
-    if (!$schedule) {
-        abort(404);
+    public function educationByCategory($category)
+    {
+        return redirect()->route('education', ['category' => $category]);
     }
 
-    $categories = Category::all();
-    $categoryTops = CategoryTopp::all();
+    public function parents()
+    {
+        $parentInfos = ParentInfo::latest()->get();
 
-    return view('frond.educationDetail', compact('schedule', 'categories', 'categoryTops'));
-}
+        return view('frond.parents', compact('parentInfos'));
+    }
 
+    public function educationDetail($id)
+    {
+        $schedule = Schudeli::with([
+            'lesson',
+            'smena',
+            'employee',
+            'weeklySchedules.lesson',
+            'weeklySchedules.employee',
+        ])->findOrFail($id);
+        return view('frond.educationDetail', compact('schedule'));
+    }
 
-
-
-
-
-
-
-
-
-
-    public function usefulResurs() {
-
+    public function usefulResurs()
+    {
         $usefulresource = UsefulResource::all();
-
         return view('frond.usefulResurs', compact('usefulresource'));
     }
 
-    public function gallery() {
-
+    public function gallery()
+    {
         $gallery = Gallery::all();
-        return view('frond.gallery',compact('gallery'));
-    }
-    public function infoGrafika() {
-
-        $infografika = Infografika::all();
-        return view('frond.infoGrafika',compact('infografika'));
-    }
-public function usefulResourceDetail($id)
-{
-    $resource = UsefulResource::where('id', $id)->firstOrFail();
-    return view('frond.usefulresoursedetail', compact('resource'));
-}
-
-    public function connect() {
-        $categories = Category::all();
-        $categoryTop = CategoryTopp::all();
-        $categories = Category::all();
-        return view('frond.connect',compact('categories','categoryTop','categories'));
+        return view('frond.gallery', compact('gallery'));
     }
 
-    public function SendEmail(Request $request) {
+    public function galleryDetail($id)
+    {
+        $photo = Gallery::findOrFail($id);
+        return view('frond.galleryDetail', compact('photo'));
+    }
 
-        $data = $request->all();
-        Mail::to('behruzjalolov13@gmail.com')->send(new Message($data));
+    public function infoGrafika()
+    {
+        $infografika = InfoGrafika::all();
+        return view('frond.infoGrafika', compact('infografika'));
+    }
 
-        return redirect()->route('connect')->with('success', 'Email muvaffaqiyatli yuborildi!');
+    public function usefulResourceDetail($id)
+    {
+        $resource = UsefulResource::findOrFail($id);
+        return view('frond.usefulresoursedetail', compact('resource'));
+    }
+
+    public function connect()
+    {
+        return view('frond.connect');
+    }
+
+    public function SendEmail(Request $request)
+    {
+        Mail::to('matab16sirdaryo@gmail.com')->send(new Message($request->all()));
+        return redirect()->route('connect')->with('success', __('message.email_sent'));
+    }
+
+    // 🔍 Qidiruv funksiyasi
+    public function searchPosts(Request $request)
+    {
+        $query = $request->input('query');
+        $locale = app()->getLocale();
+
+        if (!$query) {
+            return view('frond.search', [
+                'posts' => collect(),
+                'directors' => collect(),
+                'employees' => collect(),
+            ]);
+        }
+
+        $posts = Post::where("title_$locale", 'like', "%$query%")
+            ->orWhere("body_$locale", 'like', "%$query%")
+            ->get();
+
+        $directors = Employee::with('position')
+            ->whereHas('category', function ($q) {
+                $q->whereIn('name_uz', ['Direktor', 'Rahbariyat']);
+            })
+            ->where(function ($q) use ($query, $locale) {
+                $q->where("name_$locale", 'like', "%$query%")
+                    ->orWhere('email', 'like', "%$query%");
+            })
+            ->get();
+
+        $employees = Employee::with('position')
+            ->where(function ($q) use ($query, $locale) {
+                $q->where("name_$locale", 'like', "%$query%")
+                    ->orWhere('email', 'like', "%$query%");
+            })
+            ->get();
+
+        return view('frond.search', compact('posts', 'directors', 'employees'));
     }
 }
