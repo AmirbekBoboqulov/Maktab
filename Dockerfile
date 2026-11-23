@@ -34,4 +34,4 @@ RUN rm -f bootstrap/cache/*.php \
 COPY --from=frontend /app/public/build /var/www/html/public/build
 
 EXPOSE 10000
-CMD ["sh", "-c", "php artisan migrate --force; port=${PORT:-10000}; sed -ri \"s/Listen 80/Listen ${port}/\" /etc/apache2/ports.conf; sed -ri \"s/:80>/:${port}>/\" /etc/apache2/sites-available/000-default.conf; exec apache2-foreground"]
+CMD ["sh", "-c", "rm -f bootstrap/cache/*.php; export APP_KEY=\"$(php -r 'echo \"base64:\" . base64_encode(hash(\"sha256\", getenv(\"APP_KEY\"), true));')\"; php artisan migrate --force; port=${PORT:-10000}; sed -ri \"s/Listen 80/Listen ${port}/\" /etc/apache2/ports.conf; sed -ri \"s/:80>/:${port}>/\" /etc/apache2/sites-available/000-default.conf; exec apache2-foreground"]
