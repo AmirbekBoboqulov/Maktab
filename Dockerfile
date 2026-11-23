@@ -22,7 +22,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 COPY . .
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader \
+RUN rm -f bootstrap/cache/*.php \
+    && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader \
     && a2enmod rewrite headers \
     && sed -ri 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf \
     && printf '<Directory /var/www/html/public>\n    AllowOverride All\n    Require all granted\n</Directory>\n' > /etc/apache2/conf-available/laravel.conf \
