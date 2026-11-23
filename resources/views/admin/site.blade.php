@@ -9,6 +9,7 @@
     <title>@yield('title', '23-sonli umumta’lim maktabi | Maktab23')</title>
     <meta name="description" content="23-sonli umumta’lim maktabi — Sirdaryo viloyati, Boyovut tumani. Maktab yangiliklari, o‘qituvchilar, ta’lim va foydali ma’lumotlar.">
     <meta name="keywords" content="maktab23, 23-maktab, Boyovut maktabi, Sirdaryo maktabi, umumta’lim maktabi">
+    <meta name="google-site-verification" content="Om9rKVJ4vrSxrqocu85BVwMXQF-4FgX9oSA3NafPfxk">
     <link rel="canonical" href="{{ url()->current() }}">
     <meta property="og:title" content="23-sonli umumta’lim maktabi | Maktab23">
     <meta property="og:description" content="23-sonli umumta’lim maktabining rasmiy sayti.">
