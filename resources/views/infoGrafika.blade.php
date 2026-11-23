@@ -16,17 +16,17 @@
     <title>Infografika</title>
 
     <!-- Bootstrap core css -->
-    <link rel="stylesheet" href="{{assert('front/css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{asset('front/css/bootstrap.css')}}">
 
     <!-- Animate css -->
-    <link rel="stylesheet" href="{{assert('front./css/animate.css')}}">
+    <link rel="stylesheet" href="{{asset('front./css/animate.css')}}">
     <!-- Font awesome style -->
-    <link rel="stylesheet" href="{{assert('front/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{asset('front/css/font-awesome.min.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!-- Custom style for this template -->
-    <link rel="stylesheet" href="{{assert('front/css/style.css')}}">
-    <link rel="stylesheet" href="{{assert('front/css/responsive.css')}}">
+    <link rel="stylesheet" href="{{asset('front/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('front/css/responsive.css')}}">
 </head>
 <style>
     @media (max-width:412px) {
