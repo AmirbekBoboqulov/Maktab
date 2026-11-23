@@ -14,13 +14,26 @@ class RolePermissionsSeeder extends Seeder
     public function run(): void
     {
         // Rollar
-        Role::firstOrCreate(['name' => "Super Admin"]);
-        Role::firstOrCreate(['name' => "Admin"]);
-        Role::firstOrCreate(['name' => "Creator"]);
+        $roles = ['Oddiy foydalanuvchi', 'Admin', 'Super Admin', 'Ota-ona'];
+
+        foreach ($roles as $role) {
+            Role::firstOrCreate(['name' => $role, 'guard_name' => 'web']);
+        }
 
         // Ruxsatlar
-        Permission::firstOrCreate(['name' => "Create category"]);
-        Permission::firstOrCreate(['name' => "Edit category"]);
-        Permission::firstOrCreate(['name' => "Delete category"]);
+        $permissions = [
+            'manage content',
+            'manage users',
+            'manage roles',
+            'view parent panel',
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
+        }
+
+        Role::findByName('Super Admin')->syncPermissions($permissions);
+        Role::findByName('Admin')->syncPermissions(['manage content', 'view parent panel']);
+        Role::findByName('Ota-ona')->givePermissionTo('view parent panel');
     }
 }

@@ -59,7 +59,7 @@ class FrondController extends Controller
     {
         $statictik = $this->safeCollection(fn () => Statictik::all());
         $posts = $this->safeCollection(fn () => Post::all());
-        $HomePageImageTag = $this->safeCollection(fn () => HomePageImageTag::latest()->first());
+        $HomePageImageTag = $this->safeValue(fn () => HomePageImageTag::latest()->first());
         $schedule = $this->safeCollection(fn () => Schudeli::with('smena')->get());
         $usefulResources = $this->safeCollection(fn () => UsefulResource::latest()->take(4)->get());
         $parentInfo = $this->safeCollection(fn () => ParentInfo::latest()->first());

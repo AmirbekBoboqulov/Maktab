@@ -62,10 +62,12 @@ Route::get('/search-posts', [FrondController::class, 'searchPosts'])->name('sear
 Route::get('/useful-resources/{resource}', [FrondController::class, 'usefulResourceDetail'])->name('useful-resources.detail');
 
 // 📤 CKEditor yuklash
-Route::post('ckeditor/upload', [\App\Http\Controllers\CKEditorController::class, 'upload'])->name('admin.ckeditor.upload');
+Route::post('ckeditor/upload', [\App\Http\Controllers\CKEditorController::class, 'upload'])
+    ->middleware(['auth', 'role:Admin|Super Admin'])
+    ->name('admin.ckeditor.upload');
 
 // 🛠️ Admin panel yo‘nalishlari
-Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'role:Admin|Super Admin'])->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard', [
             'studentCount' => Statictik::latest()->value('studentsCount') ?? 0,

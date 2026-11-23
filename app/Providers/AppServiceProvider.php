@@ -16,18 +16,20 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // 1️⃣ Agar composer yoki artisan ishlayotgan bo‘lsa — to‘xtatamiz
         if (App::runningInConsole()) {
             return;
         }
 
-        // 2️⃣ Agar jadval hali mavjud bo‘lmasa — to‘xtatamiz
-        if (!Schema::hasTable('positions')) {
-            return;
+        $positions = collect();
+
+        try {
+            if (Schema::hasTable('positions')) {
+                $positions = Position::all();
+            }
+        } catch (\Throwable $exception) {
+            report($exception);
         }
 
-        // 3️⃣ Endi xavfsiz tarzda query yozish mumkin
-        $positions = Position::all();
         view()->share('positions', $positions);
     }
 }
