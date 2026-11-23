@@ -32,6 +32,21 @@ Route::get('/lang/{locale}', function ($locale) {
 
 // 🏫 Maktab sahifalari
 Route::get('/', [FrondController::class, 'index'])->name('index');
+Route::get('/sitemap.xml', function () {
+    $routes = [
+        'index', 'schooltack', 'leaderShep', 'teachers', 'rekvizit',
+        'education', 'parents', 'schoolNews', 'Gallery', 'infoGrafika',
+        'connect', 'usefulresurs',
+    ];
+
+    $urls = collect($routes)
+        ->filter(fn ($route) => Route::has($route))
+        ->map(fn ($route) => '<url><loc>' . e(route($route)) . '</loc><changefreq>weekly</changefreq><priority>' . ($route === 'index' ? '1.0' : '0.7') . '</priority></url>')
+        ->implode('');
+
+    return response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . $urls . '</urlset>')
+        ->header('Content-Type', 'application/xml');
+})->name('sitemap');
 Route::get('/schooltack', [FrondController::class,'schoolTack'])->name('schooltack');
 Route::get('/leaderShep', [FrondController::class,'leaderShep'])->name('leaderShep');
 Route::get('/leaderShep/detail/{id}', [FrondController::class, 'leaderShepDetail'])->name('leaderShep.detail');

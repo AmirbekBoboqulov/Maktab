@@ -6,7 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('title')</title>
+    <title>@yield('title', '23-sonli umumta’lim maktabi | Maktab23')</title>
+    <meta name="description" content="23-sonli umumta’lim maktabi — Sirdaryo viloyati, Boyovut tumani. Maktab yangiliklari, o‘qituvchilar, ta’lim va foydali ma’lumotlar.">
+    <meta name="keywords" content="maktab23, 23-maktab, Boyovut maktabi, Sirdaryo maktabi, umumta’lim maktabi">
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta property="og:title" content="23-sonli umumta’lim maktabi | Maktab23">
+    <meta property="og:description" content="23-sonli umumta’lim maktabining rasmiy sayti.">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
 
     <!-- Bootstrap core css -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
