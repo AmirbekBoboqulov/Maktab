@@ -15,17 +15,11 @@ services:
       - key: APP_URL
         value: https://maktab23.onrender.com
       - key: DB_CONNECTION
-        value: mysql
-      - key: DB_HOST
-        sync: false
-      - key: DB_PORT
-        value: 3306
+        value: sqlite
       - key: DB_DATABASE
-        sync: false
-      - key: DB_USERNAME
-        sync: false
-      - key: DB_PASSWORD
-        sync: false
+        value: /var/www/html/database/database.sqlite
+      - key: SESSION_DRIVER
+        value: file
       - key: CACHE_STORE
         value: file
       - key: QUEUE_CONNECTION
